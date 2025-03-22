@@ -48,10 +48,6 @@ button.accept-policy {
     margin-top: 40px;
     padding: 20px;
     background: #fff;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
 }
 
-.footer p {
-        margin: 5px 0;
-        font-size: 14px;
-}
+
