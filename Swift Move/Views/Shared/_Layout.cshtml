@@ -18,7 +18,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Swift_Move</title>
+    <title>@ViewData["Title"] - Swift Move</title> 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Swift_Move.styles.css" asp-append-version="true" />
@@ -27,7 +27,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Swift_Move</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Swift Move</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -57,11 +57,40 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Swift_Move - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="bg-dark text-white p-3 mt-4">
+        <div class="container text-center">
+            <img src="~/images/SwiftMoveLogo.png" alt="Swift Move Logo" width="100" />
+            <p>© 2025 Swift Move | Follow us on:</p>
+            <a href="#" class="text-white me-3">LinkedIn</a>
+            <a href="#" class="text-white me-3">Instagram</a>
+            <a href="#" class="text-white">Facebook</a>
         </div>
     </footer>
+
+    <footer>
+    <div class="footer-left">
+        <img src="Images/EquiPrint_Logo_Light_svg.svg" alt="EquiPrint Logo"> 
+        <div>
+            <strong>EquiPrint</strong><br>
+            3D Printing Made Accessible<br>
+            ©2025 EquiPrint. All Rights Reserved
+        </div>
+    </div>
+    <div class="footer-links">
+        <a href="index.php">Index</a>
+        <a href="prints.php">Prints</a>
+        <a href="about-us.php">About Us</a>
+        <a href="contact.php">Contact</a>
+        <a href="faq.php">FAQ</a>
+    </div>
+    <div class="footer-right">
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Facebook</a>
+    </div>
+    </footer>
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
