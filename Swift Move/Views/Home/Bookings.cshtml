@@ -9,13 +9,15 @@
     <h1>Bookings</h1>
     <p class="indexp">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh.</p>
     
-    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="text-center text-white" style="min-height: 100vh; background-color: darkcyan; padding-top: 20px;">
+    
+    <div class="container d-flex justify-content-center align-items-start">
         <div class="card shadow-lg p-4" style="width: 40rem; background-color: darkcyan;">
             <h2 class="text-center mb-4">Create New Service</h2>
 
             <form asp-action="Create" method="post">
                 <div class="mb-3">
-                    <label asp-for="Title" class="form-label">Service Title</label>
+                    <label asp-for="Title" class="form-label">Company/Personal Name</label>
                     <input asp-for="Title" class="form-control" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
@@ -55,17 +57,32 @@
                     <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                 </div>
 
+                <div class="mb-3">
+                    <label asp-for="Phone" class="form-label">Phone Number</label>
+                    <input asp-for="Phone" type="tel" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Create Service</button>
                     <a asp-action="Index" class="btn btn-secondary">Cancel</a>
                 </div>
-                </form>
+            </form>
+
         </div>
     </div>
 
     @section Scripts {
         @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     }
+</div>
+
     
 
 </div>

@@ -26,5 +26,13 @@ namespace Swift_Move.Models
         public DateTime DeliveryDate { get; set; }
 
         public string Description { get; set; }
+
+        [Required(ErrorMessage = "Phone Number is required")]
+        [Phone(ErrorMessage = "Enter a valid phone number")]
+        public string Phone { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Enter a valid email address")]
+        public string Email { get; set; }
     }
 }
