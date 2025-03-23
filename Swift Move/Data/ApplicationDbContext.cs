@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Swift_Move.Models;
 
 namespace Swift_Move.Data
 {
@@ -9,5 +10,7 @@ namespace Swift_Move.Data
             : base(options)
         {
         }
+
+        public DbSet<ServiceModel> Service { get; set; }
     }
 }
