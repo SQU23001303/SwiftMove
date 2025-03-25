@@ -15,7 +15,7 @@
         <div class="card shadow-lg p-4" style="width: 40rem; background-color: darkcyan;">
             <h2 class="text-center mb-4">Create New Service</h2>
 
-            <form asp-action="Create" method="post">
+            <form asp-controller="Home" asp-action="Create" method="post">
                 <div class="mb-3">
                     <label asp-for="Title" class="form-label">Company/Personal Name</label>
                     <input asp-for="Title" class="form-control" />
