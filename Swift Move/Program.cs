@@ -43,7 +43,7 @@ async Task SeedRolesAndAdminUser(RoleManager<IdentityRole> roleManager, UserMana
     }
 
     var adminEmail = "admin@email.com";
-    var adminPassword = "Admin123";
+    var adminPassword = "Admin123!";
     if (await userManager.FindByEmailAsync(adminEmail) == null)
     {
         var adminUser = new IdentityUser
@@ -55,7 +55,7 @@ async Task SeedRolesAndAdminUser(RoleManager<IdentityRole> roleManager, UserMana
         };
 
         var result = await userManager.CreateAsync(adminUser, adminPassword);
-        if (result.Succeeded)
+        if (result.Succeeded) 
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");
         }
@@ -74,5 +74,15 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+    await SeedRolesAndAdminUser(roleManager, userManager);
+}
+
 
 app.Run();
