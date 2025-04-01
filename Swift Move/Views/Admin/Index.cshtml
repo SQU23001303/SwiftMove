@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Swift_Move.Models.ServiceModel>
+@{
     ViewData["Title"] = "Admin Dashboard";
 }
 
@@ -6,6 +7,30 @@
     <h1>Admin Dashboard</h1>
     <p>Welcome, Admin! Below is our dashboard!</p>
 
+    <h1>Service Listings</h1>
+    <h4>Below is a collection of services we currently have booked in</h4>
 
+    <div class="container mt-4 text-dark">
+        <div class="row">
+            @foreach (var service in Model)
+            {
+                    <div class="col-md-4 md-4">
+                        <div class="card shadiw-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">@service.Title</h5>
+                                <p class="card-text"><strong>Collection Address:</strong> @service.CollectionAddress</p>
+                                <p class="card-text"><strong>Delivery Address:</strong> @service.DeliveryAddress</p>
+                                <p class="card-text"><strong>Service Type:</strong> @service.ServiceType</p>
+                                <p class="card-text"><strong>Collection Date:</strong> @service.CollectionDate</p>
+                                <p class="card-text"><strong>Delivery Date:</strong> @service.DeliveryDate</p>
+                                <p class="card-text"><strong>Delivery Description:</strong> @service.Description</p>
+                                <p class="card-text"><strong>Customer Phone Number:</strong> @service.Phone</p>
+                                <p class="card-text"><strong>Customer Email Address:</strong> @service.Email</p>
+                                </div>
+                        </div>
+                    </div>
+            }
+        </div>
+    </div>
 
 </div>

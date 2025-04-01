@@ -69,7 +69,7 @@ namespace Swift_Move.Controllers
                     service.CollectionDate = service.CollectionDate.ToUniversalTime();
                     service.DeliveryDate = service.DeliveryDate.ToUniversalTime();
 
-                    _context.Service.Add(service);
+                    _context.Services.Add(service);
                     _context.SaveChanges();
 
                     return RedirectToAction("Index");

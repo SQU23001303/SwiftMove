@@ -11,6 +11,6 @@ namespace Swift_Move.Data
         {
         }
 
-        public DbSet<ServiceModel> Service { get; set; }
+        public DbSet<ServiceModel> Services { get; set; }
     }
 }
