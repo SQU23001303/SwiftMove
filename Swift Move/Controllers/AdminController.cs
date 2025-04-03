@@ -21,7 +21,10 @@ namespace Swift_Move.Controllers
 
         public IActionResult Index()
         {
-            var services = _context.Services.ToList();
+            var services = _context.Services
+                .Include(s => s.ServiceStaff)
+                .ThenInclude(ss => ss.Staff)
+                .ToList();
 
             return View(services);
         }

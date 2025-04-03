@@ -3,29 +3,43 @@
 
 @{
     ViewData["Title"] = "Assign Staff";
+    var staffList = ViewBag.StaffList as List<Staff>;
 }
 
 <h2>Assign Staff to Booking</h2>
 
-<form asp-action="AssignStaff" method="post">
+<form asp-action="AssignStaff" method="post" onsubmit="return validateCheckboxLimit();">
     <input type="hidden" name="ServiceModelId" value="@Model.Id" />
 
     <div class="form-group">
         <label>Select Staff (Max 3):</label>
-        <select name="SelectedStaffIds[]" class="form-control" multiple>
-            @foreach (var staff in ViewBag.StaffList as List<Staff>)
+        <div id="staffCheckboxes" class="border rounded p-2">
+            @foreach (var staff in staffList)
             {
-                <option value="@staff.Id">@staff.FullName</option>
+                var isChecked = Model.ServiceStaff?.Any(ss => ss.StaffId == staff.Id) ?? false;
+
+                <div class="form-check">
+                    <input class="form-check-input staff-checkbox"
+                           type="checkbox"
+                           name="SelectedStaffIds"
+                           value="@staff.Id"
+                           id="staff_@staff.Id"
+                           @(isChecked ? "checked" : "") />
+                    <label class="form-check-label" for="staff_@staff.Id">
+                        @staff.FullName (@staff.Email)
+                    </label>
+                </div>
             }
-        </select>
+        </div>
+        <small class="text-muted">You can select up to 3 staff members.</small>
     </div>
 
-    <button type="submit" class="btn btn-success mt-2">Assign Staff</button>
+    <button type="submit" class="btn btn-success mt-3">Assign Staff</button>
 </form>
 
 @if (Model.ServiceStaff != null && Model.ServiceStaff.Any())
 {
-    <div class="mt-3">
+    <div class="mt-4">
         <strong>Currently Assigned:</strong>
         <ul>
             @foreach (var assignment in Model.ServiceStaff)
@@ -39,3 +53,17 @@ else
 {
     <p class="mt-3 text-muted">No staff assigned yet.</p>
 }
+
+<script>
+    function validateCheckboxLimit() {
+        const checkboxes = document.querySelectorAll('.staff-checkbox');
+        const checkedCount = [...checkboxes].filter(cb => cb.checked).length;
+
+        if (checkedCount > 3) {
+            alert("You can only select up to 3 staff members.");
+            return false; // prevent form submission
+        }
+
+        return true;
+    }
+</script>
