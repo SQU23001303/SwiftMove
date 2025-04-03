@@ -35,5 +35,19 @@ namespace Swift_Move.Controllers
             return View(service);
         }
 
+        [HttpPost]
+        public IActionResult AssignStaff(int id, int AssignedStaffId)
+        {
+            var service = _context.Services.FirstOrDefault(s => s.Id == id);
+            if (service != null)
+            {
+                service.AssignedStaffId = AssignedStaffId;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

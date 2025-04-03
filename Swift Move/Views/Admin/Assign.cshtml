@@ -1,0 +1,27 @@
+﻿@model Swift_Move.Models.ServiceModel
+
+@{
+    ViewData["Title"] = "Assign Staff";
+}
+
+<h2>Assign Staff to Booking</h2>
+
+<form asp-action="AssignStaff" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="form-group">
+        <label for="AssignedStaffId">Select Staff Member:</label>
+        <select asp-for="AssignedStaffId" asp-items="ViewBag.StaffList" class="form-control">
+            <option value="">-- Select Staff --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-2">Assign</button>
+</form>
+
+@if (Model.AssignedStaff != null)
+{
+    <p class="mt-3">
+        <strong>Currently Assigned:</strong> @Model.AssignedStaff.FullName (@Model.AssignedStaff.Email)
+    </p>
+}
