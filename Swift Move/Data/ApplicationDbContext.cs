@@ -15,6 +15,20 @@ namespace Swift_Move.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<ServiceStaff>()
+                .HasKey(ss => new { ss.ServiceModelId, ss.StaffId });
+
+            modelBuilder.Entity<ServiceStaff>()
+                .HasOne(ss => ss.ServiceModel)
+                .WithMany(s => s.ServiceStaff)
+                .HasForeignKey(ss => ss.ServiceModelId);
+
+            modelBuilder.Entity<ServiceStaff>()
+                .HasOne(ss => ss.Staff)
+                .WithMany(s => s.ServiceStaff)
+                .HasForeignKey(ss => ss.StaffId);
+
+
             // Seeding Staff records here
             modelBuilder.Entity<Staff>().HasData(
                 new Staff { Id = 1, FullName = "John Smith", Email = "john.smith@swiftmove.com" },
@@ -27,12 +41,15 @@ namespace Swift_Move.Data
                 new Staff { Id = 8, FullName = "Zara Patel", Email = "zara.patel@swiftmove.com" },
                 new Staff { Id = 9, FullName = "Noah Williams", Email = "noah.williams@swiftmove.com" },
                 new Staff { Id = 10, FullName = "Hannah Lee", Email = "hannah.lee@swiftmove.com" }
+
+            
             );
         }
 
 
         public DbSet<ServiceModel> Services { get; set; }
         public DbSet<Staff> Staff { get; set; }
+        public DbSet<ServiceStaff> ServiceStaff { get; set; }
 
 
 

@@ -14,5 +14,7 @@ namespace Swift_Move.Models
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Enter a valid email address")]
         public string Email { get; set; }
+
+        public ICollection<ServiceStaff> ServiceStaff { get; set; }
     }
 }

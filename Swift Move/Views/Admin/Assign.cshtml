@@ -1,4 +1,5 @@
 ﻿@model Swift_Move.Models.ServiceModel
+@using Swift_Move.Models
 
 @{
     ViewData["Title"] = "Assign Staff";
@@ -7,21 +8,34 @@
 <h2>Assign Staff to Booking</h2>
 
 <form asp-action="AssignStaff" method="post">
-    <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="hidden" name="ServiceModelId" value="@Model.Id" />
 
     <div class="form-group">
-        <label for="AssignedStaffId">Select Staff Member:</label>
-        <select asp-for="AssignedStaffId" asp-items="ViewBag.StaffList" class="form-control">
-            <option value="">-- Select Staff --</option>
+        <label>Select Staff (Max 3):</label>
+        <select name="SelectedStaffIds[]" class="form-control" multiple>
+            @foreach (var staff in ViewBag.StaffList as List<Staff>)
+            {
+                <option value="@staff.Id">@staff.FullName</option>
+            }
         </select>
     </div>
 
-    <button type="submit" class="btn btn-success mt-2">Assign</button>
+    <button type="submit" class="btn btn-success mt-2">Assign Staff</button>
 </form>
 
-@if (Model.AssignedStaff != null)
+@if (Model.ServiceStaff != null && Model.ServiceStaff.Any())
 {
-    <p class="mt-3">
-        <strong>Currently Assigned:</strong> @Model.AssignedStaff.FullName (@Model.AssignedStaff.Email)
-    </p>
+    <div class="mt-3">
+        <strong>Currently Assigned:</strong>
+        <ul>
+            @foreach (var assignment in Model.ServiceStaff)
+            {
+                <li>@assignment.Staff.FullName (@assignment.Staff.Email)</li>
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <p class="mt-3 text-muted">No staff assigned yet.</p>
 }

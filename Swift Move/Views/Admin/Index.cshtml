@@ -42,13 +42,16 @@
                         <td>@service.Phone</td>
                         <td>@service.Email</td>
                         <td>
-                            @if (service.AssignedStaff != null)
+                            @if (service.ServiceStaff != null && service.ServiceStaff.Any())
                             {
-                                <span>@service.AssignedStaff.FullName</span>
+                                @foreach (var s in service.ServiceStaff)
+                                {
+                                    <div>@s.Staff.FullName</div>
+                                }
                             }
                             else
                             {
-                                <em>Not assigned</em>
+                                <em>No staff added</em>
                             }
                         </td>
                         <td>

@@ -36,10 +36,6 @@ namespace Swift_Move.Models
         [EmailAddress(ErrorMessage = "Enter a valid email address")]
         public string Email { get; set; }
 
-
-        public int? AssignedStaffId { get; set; } // Nullable, because it may not be assigned yet
-
-        [ForeignKey("AssignedStaffId")]
-        public Staff AssignedStaff { get; set; }
+        public ICollection<ServiceStaff> ServiceStaff { get; set; }
     }
 }

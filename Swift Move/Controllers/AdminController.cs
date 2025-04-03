@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SQLitePCL;
 using Swift_Move.Data;
 using Microsoft.EntityFrameworkCore;
+using Swift_Move.Models;
 
 
 namespace Swift_Move.Controllers
@@ -28,25 +29,44 @@ namespace Swift_Move.Controllers
         public IActionResult Assign(int id)
         {
             var service = _context.Services
-                .Include(s => s.AssignedStaff) // To load staff info
+                .Include(s => s.ServiceStaff)
+                .ThenInclude(ss => ss.Staff)
                 .FirstOrDefault(s => s.Id == id);
 
-            ViewBag.StaffList = new SelectList(_context.Staff.ToList(), "Id", "FullName");
+            ViewBag.StaffList = _context.Staff.ToList();
             return View(service);
         }
 
         [HttpPost]
-        public IActionResult AssignStaff(int id, int AssignedStaffId)
+        public IActionResult AssignStaff(int ServiceModelId, List<int> SelectedStaffIds)
         {
-            var service = _context.Services.FirstOrDefault(s => s.Id == id);
+            var service = _context.Services
+                .Include(s => s.ServiceStaff)
+                .FirstOrDefault(s => s.Id == ServiceModelId);
+
             if (service != null)
             {
-                service.AssignedStaffId = AssignedStaffId;
+                // Remove existing assignments
+                var existing = _context.ServiceStaff.Where(ss => ss.ServiceModelId == ServiceModelId);
+                _context.ServiceStaff.RemoveRange(existing);
+
+                // Add new staff (limit to 3)
+                var selected = SelectedStaffIds.Take(3).ToList();
+                foreach (var staffId in selected)
+                {
+                    _context.ServiceStaff.Add(new ServiceStaff
+                    {
+                        ServiceModelId = ServiceModelId,
+                        StaffId = staffId
+                    });
+                }
+
                 _context.SaveChanges();
             }
 
             return RedirectToAction("Index");
         }
+
 
 
     }
