@@ -32,7 +32,7 @@ namespace Swift_Move.Data
 
 
         public DbSet<ServiceModel> Services { get; set; }
-
+        public DbSet<Staff> Staff { get; set; }
 
 
 

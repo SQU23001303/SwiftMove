@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SQLitePCL;
 using Swift_Move.Data;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Swift_Move.Controllers
 {
@@ -25,7 +27,7 @@ namespace Swift_Move.Controllers
 
         public IActionResult Assign(int id)
         {
-            var service = _context.ServiceModels
+            var service = _context.Services
                 .Include(s => s.AssignedStaff) // To load staff info
                 .FirstOrDefault(s => s.Id == id);
 
