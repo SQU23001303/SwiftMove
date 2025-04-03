@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Swift_Move.Models
 {
@@ -34,5 +35,11 @@ namespace Swift_Move.Models
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Enter a valid email address")]
         public string Email { get; set; }
+
+
+        public int? AssignedStaffId { get; set; } // Nullable, because it may not be assigned yet
+
+        [ForeignKey("AssignedStaffId")]
+        public Staff AssignedStaff { get; set; }
     }
 }
