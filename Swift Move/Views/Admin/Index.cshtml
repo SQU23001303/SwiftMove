@@ -11,9 +11,10 @@
     <h2>Service Listings</h2>
     <h4>Below is a collection of services we currently have booked in</h4>
 
-    <div class="container mt-4 text-dark">
-        <table class="table table-bordered table-striped table-hover bg-white">
-            <thead class="thead-dark">
+    <div class="container-fluid mt-4 text-dark">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover bg-white w-100">
+            <thead class="table-dark">
                 <tr>
                     <th>Title</th>
                     <th>Collection Address</th>
@@ -44,14 +45,16 @@
                         <td>
                             @if (service.ServiceStaff != null && service.ServiceStaff.Any())
                             {
-                                @foreach (var s in service.ServiceStaff)
-                                {
-                                    <div>@s.Staff.FullName</div>
-                                }
+                                <ul class="mb-0 ps-3">
+                                    @foreach (var s in service.ServiceStaff)
+                                    {
+                                        <li>@s.Staff.FullName</li>
+                                    }
+                                </ul>
                             }
                             else
                             {
-                                <em>No staff added</em>
+                                <span class="text-muted fst-italic">No staff added</span>
                             }
                         </td>
                         <td>
