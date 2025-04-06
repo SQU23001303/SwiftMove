@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Swift_Move.Models.ServiceModel>
+
 @{
     ViewData["Title"] = "Admin Dashboard";
 }
@@ -7,30 +8,61 @@
     <h1>Admin Dashboard</h1>
     <p>Welcome, Admin! Below is our dashboard!</p>
 
-    <h1>Service Listings</h1>
+    <h2>Service Listings</h2>
     <h4>Below is a collection of services we currently have booked in</h4>
 
     <div class="container mt-4 text-dark">
-        <div class="row">
-            @foreach (var service in Model)
-            {
-                    <div class="col-md-4 md-4">
-                        <div class="card shadiw-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">@service.Title</h5>
-                                <p class="card-text"><strong>Collection Address:</strong> @service.CollectionAddress</p>
-                                <p class="card-text"><strong>Delivery Address:</strong> @service.DeliveryAddress</p>
-                                <p class="card-text"><strong>Service Type:</strong> @service.ServiceType</p>
-                                <p class="card-text"><strong>Collection Date:</strong> @service.CollectionDate</p>
-                                <p class="card-text"><strong>Delivery Date:</strong> @service.DeliveryDate</p>
-                                <p class="card-text"><strong>Delivery Description:</strong> @service.Description</p>
-                                <p class="card-text"><strong>Customer Phone Number:</strong> @service.Phone</p>
-                                <p class="card-text"><strong>Customer Email Address:</strong> @service.Email</p>
-                                </div>
-                        </div>
-                    </div>
-            }
-        </div>
+        <table class="table table-bordered table-striped table-hover bg-white">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Collection Address</th>
+                    <th>Delivery Address</th>
+                    <th>Service Type</th>
+                    <th>Collection Date</th>
+                    <th>Delivery Date</th>
+                    <th>Description</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Assigned Staff</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var service in Model)
+                {
+                    <tr>
+                        <td>@service.Title</td>
+                        <td>@service.CollectionAddress</td>
+                        <td>@service.DeliveryAddress</td>
+                        <td>@service.ServiceType</td>
+                        <td>@service.CollectionDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@service.DeliveryDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@service.Description</td>
+                        <td>@service.Phone</td>
+                        <td>@service.Email</td>
+                        <td>
+                            @if (service.ServiceStaff != null && service.ServiceStaff.Any())
+                            {
+                                @foreach (var s in service.ServiceStaff)
+                                {
+                                    <div>@s.Staff.FullName</div>
+                                }
+                            }
+                            else
+                            {
+                                <em>No staff added</em>
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" asp-controller="Admin" asp-action="Assign" asp-route-id="@service.Id">
+                                Assign Staff
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-
 </div>
+
