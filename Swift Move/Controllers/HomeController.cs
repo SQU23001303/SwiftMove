@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Swift_Move.Data;
@@ -59,13 +61,11 @@ namespace Swift_Move.Controllers
         {
             if (ModelState.IsValid)
             {
-                foreach (var state in ModelState)
-                {
-                    foreach (var error in state.Value.Errors)
-                    {
-                        Console.WriteLine($"Field: {state.Key} - Error: {error.ErrorMessage}");
-                    }
-                }
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+                // 2. Assign the ID to the booking
+                service.UserId = userId;
+
                 try
                 {
                     service.CollectionDate = service.CollectionDate.ToUniversalTime();
@@ -85,6 +85,19 @@ namespace Swift_Move.Controllers
             return View("Bookings", service);
         }
 
+
+        [Authorize] // Ensure user must be logged in
+        public IActionResult MyOrders()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var bookings = _context.Services
+                .Where(s => s.UserId == userId)
+                .Include(s => s.ServiceStaff)
+                .ToList();
+
+            return View(bookings);
+        }
 
 
     }

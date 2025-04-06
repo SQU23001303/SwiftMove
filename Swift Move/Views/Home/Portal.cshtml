@@ -1,14 +1,71 @@
-﻿@{
-    ViewData["Title"] = "Portal";
+﻿@model IEnumerable<Swift_Move.Models.ServiceModel>
+
+@{
+    ViewData["Title"] = "My Orders";
 }
 
-<div class="text-center text-white">
-    
-    <h1>Customer Portal</h1>
-    <p class="indexp">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor.</p>
-
-    <br>
-    <hr class="bg-light" style="height: 2px; border: none; w-1000">
-
-
+<div class="container-fluid mt-4 text-dark">
+    <h2>My Bookings</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover bg-white w-100">
+            <thead class="table-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Collection</th>
+                    <th>Delivery</th>
+                    <th>Dates</th>
+                    <th>Status</th>
+                    <th>Staff Assigned</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>@order.Title</td>
+                            <td>@order.CollectionAddress</td>
+                            <td>@order.DeliveryAddress</td>
+                            <td>
+                                <div>@order.CollectionDate.ToString("dd/MM/yyyy HH:mm")</div>
+                                <div>@order.DeliveryDate.ToString("dd/MM/yyyy HH:mm")</div>
+                            </td>
+                            <td>
+                                @(order.ServiceStaff != null && order.ServiceStaff.Any() ? "Assigned" : "Pending")
+                            </td>
+                            <td>
+                                @if (order.ServiceStaff != null && order.ServiceStaff.Any())
+                                {
+                                    <ul class="mb-0 ps-3">
+                                        @foreach (var s in order.ServiceStaff)
+                                        {
+                                            <li>@s.Staff.FullName</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <em>No staff assigned</em>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-warning">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@order.Id" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center text-muted"><em>You have no orders yet.</em></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+
+
