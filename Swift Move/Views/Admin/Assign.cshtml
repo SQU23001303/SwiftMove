@@ -8,8 +8,9 @@
 
 <h2>Assign Staff to Booking</h2>
 
-<form asp-action="AssignStaff" method="post" onsubmit="return validateCheckboxLimit();">
-    <input type="hidden" name="ServiceModelId" value="@Model.Id" />
+<form asp-action="Assign" method="post" onsubmit="return validateCheckboxLimit();">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" id="ActionType" name="ActionType" value="" />
 
     <div class="mb-3">
         <label asp-for="QuotePrice" class="form-label"></label>
@@ -40,7 +41,11 @@
         <small class="text-muted">You can select up to 3 staff members.</small>
     </div>
 
-    <button type="submit" class="btn btn-success mt-3">Assign Staff</button>
+    <div class="mt-4 d-flex gap-2">
+        <button type="submit" class="btn btn-primary" onclick="setAction('quote')">Assign Quote</button>
+        <button type="submit" class="btn btn-success" onclick="setAction('staff')">Assign Staff</button>
+        <button type="submit" class="btn btn-warning" onclick="setAction('both')">Assign Both</button>
+    </div>
 </form>
 
 @if (Model.ServiceStaff != null && Model.ServiceStaff.Any())
@@ -61,14 +66,20 @@ else
 }
 
 <script>
+    function setAction(action) {
+        document.getElementById("ActionType").value = action;
+    }
+
     function validateCheckboxLimit() {
         const checkboxes = document.querySelectorAll('.staff-checkbox');
         const checkedCount = [...checkboxes].filter(cb => cb.checked).length;
 
-        if (checkedCount > 3) {
+        const action = document.getElementById("ActionType").value;
+        if ((action === "staff" || action === "both") && checkedCount > 3) {
             alert("You can only select up to 3 staff members.");
-            return false; // prevent form submission
+            return false;
         }
 
         return true;
     }
+</script>

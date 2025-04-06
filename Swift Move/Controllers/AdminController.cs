@@ -39,7 +39,7 @@ namespace Swift_Move.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Assign(ServiceModel model, List<int> SelectedStaffIds)
+        public IActionResult Assign(ServiceModel model, List<int> SelectedStaffIds, string ActionType)
         {
             var service = _context.Services
                 .Include(s => s.ServiceStaff)
@@ -48,23 +48,24 @@ namespace Swift_Move.Controllers
             if (service == null)
                 return NotFound();
 
-            // Update quote price
-            service.QuotePrice = model.QuotePrice;
-
-            // Remove existing staff
-            var existingAssignments = _context.ServiceStaff
-                .Where(ss => ss.ServiceModelId == service.Id);
-            _context.ServiceStaff.RemoveRange(existingAssignments);
-
-            // Add selected staff (up to 3)
-            var selected = SelectedStaffIds.Take(3).ToList();
-            foreach (var staffId in selected)
+            if (ActionType == "quote" || ActionType == "both")
             {
-                _context.ServiceStaff.Add(new ServiceStaff
+                service.QuotePrice = model.QuotePrice;
+            }
+
+            if (ActionType == "staff" || ActionType == "both")
+            {
+                var existingAssignments = _context.ServiceStaff.Where(ss => ss.ServiceModelId == service.Id);
+                _context.ServiceStaff.RemoveRange(existingAssignments);
+
+                foreach (var staffId in SelectedStaffIds.Take(3))
                 {
-                    ServiceModelId = service.Id,
-                    StaffId = staffId
-                });
+                    _context.ServiceStaff.Add(new ServiceStaff
+                    {
+                        ServiceModelId = service.Id,
+                        StaffId = staffId
+                    });
+                }
             }
 
             _context.SaveChanges();
