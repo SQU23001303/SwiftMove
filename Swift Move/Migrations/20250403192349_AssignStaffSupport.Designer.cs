@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Swift_Move.Data;
 
@@ -10,9 +11,11 @@ using Swift_Move.Data;
 namespace Swift_Move.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250403192349_AssignStaffSupport")]
+    partial class AssignStaffSupport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -219,6 +222,9 @@ namespace Swift_Move.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("AssignedStaffId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("CollectionAddress")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -255,22 +261,9 @@ namespace Swift_Move.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AssignedStaffId");
+
                     b.ToTable("Services");
-                });
-
-            modelBuilder.Entity("Swift_Move.Models.ServiceStaff", b =>
-                {
-                    b.Property<int>("ServiceModelId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("StaffId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ServiceModelId", "StaffId");
-
-                    b.HasIndex("StaffId");
-
-                    b.ToTable("ServiceStaff");
                 });
 
             modelBuilder.Entity("Swift_Move.Models.Staff", b =>
@@ -406,33 +399,13 @@ namespace Swift_Move.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Swift_Move.Models.ServiceStaff", b =>
-                {
-                    b.HasOne("Swift_Move.Models.ServiceModel", "ServiceModel")
-                        .WithMany("ServiceStaff")
-                        .HasForeignKey("ServiceModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Swift_Move.Models.Staff", "Staff")
-                        .WithMany("ServiceStaff")
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ServiceModel");
-
-                    b.Navigation("Staff");
-                });
-
             modelBuilder.Entity("Swift_Move.Models.ServiceModel", b =>
                 {
-                    b.Navigation("ServiceStaff");
-                });
+                    b.HasOne("Swift_Move.Models.Staff", "AssignedStaff")
+                        .WithMany()
+                        .HasForeignKey("AssignedStaffId");
 
-            modelBuilder.Entity("Swift_Move.Models.Staff", b =>
-                {
-                    b.Navigation("ServiceStaff");
+                    b.Navigation("AssignedStaff");
                 });
 #pragma warning restore 612, 618
         }

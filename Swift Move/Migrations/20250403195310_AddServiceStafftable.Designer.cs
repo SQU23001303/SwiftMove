@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Swift_Move.Data;
 
@@ -10,9 +11,11 @@ using Swift_Move.Data;
 namespace Swift_Move.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250403195310_AddServiceStafftable")]
+    partial class AddServiceStafftable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -219,6 +222,9 @@ namespace Swift_Move.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("AssignedStaffId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("CollectionAddress")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -254,6 +260,8 @@ namespace Swift_Move.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssignedStaffId");
 
                     b.ToTable("Services");
                 });
@@ -404,6 +412,15 @@ namespace Swift_Move.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Swift_Move.Models.ServiceModel", b =>
+                {
+                    b.HasOne("Swift_Move.Models.Staff", "AssignedStaff")
+                        .WithMany()
+                        .HasForeignKey("AssignedStaffId");
+
+                    b.Navigation("AssignedStaff");
                 });
 
             modelBuilder.Entity("Swift_Move.Models.ServiceStaff", b =>

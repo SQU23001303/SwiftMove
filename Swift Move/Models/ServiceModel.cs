@@ -1,4 +1,10 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
+
+
 
 namespace Swift_Move.Models
 {
@@ -34,5 +40,8 @@ namespace Swift_Move.Models
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Enter a valid email address")]
         public string Email { get; set; }
+
+        [ValidateNever]
+        public ICollection<ServiceStaff> ServiceStaff { get; set; }
     }
 }

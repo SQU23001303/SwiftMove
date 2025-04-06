@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,6 +7,13 @@
     <UserSecretsId>aspnet-Swift_Move-e53a03d0-9545-4c7e-9114-a33ee7410106</UserSecretsId>
     <RootNamespace>Swift_Move</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Service\**" />
+    <Content Remove="Views\Service\**" />
+    <EmbeddedResource Remove="Views\Service\**" />
+    <None Remove="Views\Service\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.11" />
@@ -23,10 +30,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Service\" />
   </ItemGroup>
 
 </Project>

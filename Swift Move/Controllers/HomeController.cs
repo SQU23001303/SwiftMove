@@ -47,11 +47,6 @@ namespace Swift_Move.Controllers
             return View();
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -64,6 +59,13 @@ namespace Swift_Move.Controllers
         {
             if (ModelState.IsValid)
             {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Field: {state.Key} - Error: {error.ErrorMessage}");
+                    }
+                }
                 try
                 {
                     service.CollectionDate = service.CollectionDate.ToUniversalTime();
@@ -80,7 +82,7 @@ namespace Swift_Move.Controllers
                 }
             }
 
-            return View(service);
+            return View("Bookings", service);
         }
 
 
