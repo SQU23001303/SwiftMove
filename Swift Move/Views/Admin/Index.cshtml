@@ -25,6 +25,7 @@
                     <th>Description</th>
                     <th>Phone</th>
                     <th>Email</th>
+                    <th>Quote</th>
                     <th>Assigned Staff</th>
                     <th>Action</th>
                 </tr>
@@ -42,6 +43,16 @@
                         <td>@service.Description</td>
                         <td>@service.Phone</td>
                         <td>@service.Email</td>
+                        <td>
+                             @if (service.QuotePrice.HasValue)
+                            {
+                                <span class="fw-bold text-success">£@service.QuotePrice.Value.ToString("F2")</span>
+                            }
+                            else
+                            {
+                            <span class="text-muted fst-italic">Quote will be available soon</span>
+                            }
+                        </td>
                         <td>
                             @if (service.ServiceStaff != null && service.ServiceStaff.Any())
                             {

@@ -11,6 +11,12 @@
 <form asp-action="AssignStaff" method="post" onsubmit="return validateCheckboxLimit();">
     <input type="hidden" name="ServiceModelId" value="@Model.Id" />
 
+    <div class="mb-3">
+        <label asp-for="QuotePrice" class="form-label"></label>
+        <input asp-for="QuotePrice" class="form-control" />
+        <span asp-validation-for="QuotePrice" class="text-danger"></span>
+    </div>
+
     <div class="form-group">
         <label>Select Staff (Max 3):</label>
         <div id="staffCheckboxes" class="border rounded p-2">

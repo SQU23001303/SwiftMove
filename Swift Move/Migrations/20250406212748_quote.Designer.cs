@@ -11,8 +11,8 @@ using Swift_Move.Data;
 namespace Swift_Move.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250325155809_admin")]
-    partial class admin
+    [Migration("20250406212748_quote")]
+    partial class quote
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -248,6 +248,9 @@ namespace Swift_Move.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal?>("QuotePrice")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("ServiceType")
                         .HasColumnType("INTEGER");
 
@@ -256,9 +259,110 @@ namespace Swift_Move.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Service");
+                    b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("Swift_Move.Models.ServiceStaff", b =>
+                {
+                    b.Property<int>("ServiceModelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ServiceModelId", "StaffId");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("ServiceStaff");
+                });
+
+            modelBuilder.Entity("Swift_Move.Models.Staff", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Staff");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "john.smith@swiftmove.com",
+                            FullName = "John Smith"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "emily.johnson@swiftmove.com",
+                            FullName = "Emily Johnson"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "aliyah.khan@swiftmove.com",
+                            FullName = "Aliyah Khan"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Email = "david.chen@swiftmove.com",
+                            FullName = "David Chen"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Email = "sophie.brown@swiftmove.com",
+                            FullName = "Sophie Brown"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Email = "carlos.garcia@swiftmove.com",
+                            FullName = "Carlos Garcia"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Email = "liam.oconnor@swiftmove.com",
+                            FullName = "Liam O'Connor"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Email = "zara.patel@swiftmove.com",
+                            FullName = "Zara Patel"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Email = "noah.williams@swiftmove.com",
+                            FullName = "Noah Williams"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Email = "hannah.lee@swiftmove.com",
+                            FullName = "Hannah Lee"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -310,6 +414,35 @@ namespace Swift_Move.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Swift_Move.Models.ServiceStaff", b =>
+                {
+                    b.HasOne("Swift_Move.Models.ServiceModel", "ServiceModel")
+                        .WithMany("ServiceStaff")
+                        .HasForeignKey("ServiceModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Swift_Move.Models.Staff", "Staff")
+                        .WithMany("ServiceStaff")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServiceModel");
+
+                    b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("Swift_Move.Models.ServiceModel", b =>
+                {
+                    b.Navigation("ServiceStaff");
+                });
+
+            modelBuilder.Entity("Swift_Move.Models.Staff", b =>
+                {
+                    b.Navigation("ServiceStaff");
                 });
 #pragma warning restore 612, 618
         }

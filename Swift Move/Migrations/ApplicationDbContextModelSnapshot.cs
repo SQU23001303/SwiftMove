@@ -245,6 +245,9 @@ namespace Swift_Move.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal?>("QuotePrice")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("ServiceType")
                         .HasColumnType("INTEGER");
 

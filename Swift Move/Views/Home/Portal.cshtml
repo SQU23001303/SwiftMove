@@ -14,6 +14,7 @@
                     <th>Collection</th>
                     <th>Delivery</th>
                     <th>Dates</th>
+                    <th>Quote</th>
                     <th>Status</th>
                     <th>Staff Assigned</th>
                     <th>Actions</th>
@@ -32,6 +33,16 @@
                                 <div>@order.CollectionDate.ToString("dd/MM/yyyy HH:mm")</div>
                                 <div>@order.DeliveryDate.ToString("dd/MM/yyyy HH:mm")</div>
                             </td>
+                            <td>
+                                @if (order.QuotePrice.HasValue)
+                                {
+                                    <span class="fw-bold text-success">£@order.QuotePrice.Value.ToString("F2")</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted fst-italic">Quote will be available soon</span>
+                                }
+                                </td>
                             <td>
                                 @(order.ServiceStaff != null && order.ServiceStaff.Any() ? "Assigned" : "Pending")
                             </td>

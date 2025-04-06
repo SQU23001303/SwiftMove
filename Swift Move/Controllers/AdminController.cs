@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using SQLitePCL;
-using Swift_Move.Data;
 using Microsoft.EntityFrameworkCore;
+using Swift_Move.Data;
 using Swift_Move.Models;
-
 
 namespace Swift_Move.Controllers
 {
@@ -41,36 +38,37 @@ namespace Swift_Move.Controllers
         }
 
         [HttpPost]
-        public IActionResult AssignStaff(int ServiceModelId, List<int> SelectedStaffIds)
+        [ValidateAntiForgeryToken]
+        public IActionResult Assign(ServiceModel model, List<int> SelectedStaffIds)
         {
             var service = _context.Services
                 .Include(s => s.ServiceStaff)
-                .FirstOrDefault(s => s.Id == ServiceModelId);
+                .FirstOrDefault(s => s.Id == model.Id);
 
-            if (service != null)
+            if (service == null)
+                return NotFound();
+
+            // Update quote price
+            service.QuotePrice = model.QuotePrice;
+
+            // Remove existing staff
+            var existingAssignments = _context.ServiceStaff
+                .Where(ss => ss.ServiceModelId == service.Id);
+            _context.ServiceStaff.RemoveRange(existingAssignments);
+
+            // Add selected staff (up to 3)
+            var selected = SelectedStaffIds.Take(3).ToList();
+            foreach (var staffId in selected)
             {
-                // Remove existing assignments
-                var existing = _context.ServiceStaff.Where(ss => ss.ServiceModelId == ServiceModelId);
-                _context.ServiceStaff.RemoveRange(existing);
-
-                // Add new staff (limit to 3)
-                var selected = SelectedStaffIds.Take(3).ToList();
-                foreach (var staffId in selected)
+                _context.ServiceStaff.Add(new ServiceStaff
                 {
-                    _context.ServiceStaff.Add(new ServiceStaff
-                    {
-                        ServiceModelId = ServiceModelId,
-                        StaffId = staffId
-                    });
-                }
-
-                _context.SaveChanges();
+                    ServiceModelId = service.Id,
+                    StaffId = staffId
+                });
             }
 
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
-
-
-
     }
 }
