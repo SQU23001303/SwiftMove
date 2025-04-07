@@ -44,7 +44,7 @@ namespace Swift_Move.Models
         [ValidateNever]
         public ICollection<ServiceStaff> ServiceStaff { get; set; }
 
-        [BindNever]
+        [ValidateNever]
         [Display(Name = "Quote Price (£)")]
         [DataType(DataType.Currency)]
         public decimal? QuotePrice { get; set; }
