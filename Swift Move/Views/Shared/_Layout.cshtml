@@ -41,9 +41,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Bookings">Bookings</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Portal">Portal</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Portal">Portal</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Contact">Contact us</a>
                         </li>
