@@ -1,0 +1,22 @@
+﻿@model Swift_Move.Models.ServiceModel
+
+@{
+    ViewData["Title"] = "Delete Booking";
+}
+
+<div class="container mt-5 text-dark">
+    <h2>Are you sure you want to delete this booking?</h2>
+
+    <div class="alert alert-danger">
+        <strong>@Model.Title</strong><br />
+        @Model.CollectionAddress to @Model.DeliveryAddress<br />
+        @Model.CollectionDate.ToString("dd/MM/yyyy HH:mm") → @Model.DeliveryDate.ToString("dd/MM/yyyy HH:mm")
+    </div>
+
+    <form asp-action="DeleteBooking" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a asp-action="Portal" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+

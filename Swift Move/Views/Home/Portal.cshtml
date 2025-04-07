@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Swift_Move.Models.ServiceModel>
 
 @{
-    ViewData["Title"] = "My Orders";
+    ViewData["Title"] = "Portal";
 }
 
-<div class="container-fluid mt-4 text-dark">
+<div class="container-fluid mt-4 text-dark text-center text-white">
     <h2>My Bookings</h2>
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover bg-white w-100">
@@ -13,7 +13,8 @@
                     <th>Title</th>
                     <th>Collection</th>
                     <th>Delivery</th>
-                    <th>Dates</th>
+                    <th>Collection Date</th>
+                    <th>Delivery Date</th>
                     <th>Quote</th>
                     <th>Status</th>
                     <th>Staff Assigned</th>
@@ -28,11 +29,9 @@
                         <tr>
                             <td>@order.Title</td>
                             <td>@order.CollectionAddress</td>
+                            <td>@order.CollectionDate.ToString("dd/MM/yyyy HH:mm")</td>
                             <td>@order.DeliveryAddress</td>
-                            <td>
-                                <div>@order.CollectionDate.ToString("dd/MM/yyyy HH:mm")</div>
-                                <div>@order.DeliveryDate.ToString("dd/MM/yyyy HH:mm")</div>
-                            </td>
+                            <td>@order.DeliveryDate.ToString("dd/MM/yyyy HH:mm")</td>
                             <td>
                                 @if (order.QuotePrice.HasValue)
                                 {
@@ -62,8 +61,8 @@
                                 }
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-warning">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@order.Id" class="btn btn-sm btn-danger">Delete</a>
+                                <a asp-action="EditBooking" asp-route-id="@order.Id" class="btn btn-sm btn-warning">Edit</a>
+                                <a asp-action="DeleteBooking" asp-route-id="@order.Id" class="btn btn-sm btn-danger">Delete</a>
                             </td>
                         </tr>
                     }
