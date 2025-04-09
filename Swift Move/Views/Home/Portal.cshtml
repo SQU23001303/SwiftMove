@@ -5,6 +5,44 @@
 }
 
 <div class="container-fluid mt-4 text-dark text-center text-white">
+    <h2>Customer Portal</h2>
+    @if (ViewBag.LoyaltyLevel != null)
+    {
+        <div class="alert alert-info text-start">
+            <strong>Loyalty Level:</strong> @ViewBag.LoyaltyLevel<br />
+            <strong>Total Spent:</strong> £@ViewBag.TotalSpent.ToString("F2")
+
+            @if (ViewBag.LoyaltyLevel == "Bronze")
+            {
+                <p class="mb-0 text-muted">Book more to unlock Silver perks at £500!</p>
+            }
+            else if (ViewBag.LoyaltyLevel == "Silver")
+            {
+                <p class="mb-0 text-muted">You're getting close to Gold! Hit £1000 to unlock all rewards.</p>
+            }
+            else if (ViewBag.LoyaltyLevel == "Gold")
+            {
+                <p class="mb-0 fw-bold text-warning">You're Gold! Contact us to redeem your exclusive benefits.</p>
+            }
+
+            @if (ViewBag.FreeMonthUnlocked != null && (bool)ViewBag.FreeMonthUnlocked)
+            {
+                <div class="alert alert-success text-start">
+                    <strong>You've unlocked your FREE month of SwiftMove!</strong><br />
+                    Our team will contact you to apply your reward on your next booking.
+                </div>
+            }
+            else if (ViewBag.MonthsBooked != null)
+            {
+                int months = (int)ViewBag.MonthsBooked;
+                <div class="alert alert-warning text-start">
+                    You've booked in <strong>@months</strong> unique month(s).<br />
+                    Book in @((11 - months)) more month(s) to unlock a free one!
+                </div>
+            }
+        </div>
+    }
+
     <h2>My Bookings</h2>
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover bg-white w-100">
@@ -12,8 +50,8 @@
                 <tr>
                     <th>Title</th>
                     <th>Collection</th>
-                    <th>Delivery</th>
                     <th>Collection Date</th>
+                    <th>Delivery</th>
                     <th>Delivery Date</th>
                     <th>Quote</th>
                     <th>Status</th>

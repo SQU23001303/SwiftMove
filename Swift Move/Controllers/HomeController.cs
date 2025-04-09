@@ -81,7 +81,7 @@ namespace Swift_Move.Controllers
         }
 
 
-        [Authorize] // Ensure user must be logged in
+        [Authorize]
         public IActionResult Portal()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -91,6 +91,31 @@ namespace Swift_Move.Controllers
                 .Include(s => s.ServiceStaff)
                 .ThenInclude(ss => ss.Staff)
                 .ToList();
+
+            // ✅ Loyalty based on total spend
+            decimal totalSpent = bookings
+                .Where(b => b.QuotePrice.HasValue)
+                .Sum(b => b.QuotePrice.Value);
+
+            string loyaltyLevel = totalSpent switch
+            {
+                >= 1000 => "Gold",
+                >= 500 => "Silver",
+                _ => "Bronze"
+            };
+
+            ViewBag.LoyaltyLevel = loyaltyLevel;
+            ViewBag.TotalSpent = totalSpent;
+
+            var bookedMonths = bookings
+                .Select(b => b.CollectionDate.ToString("yyyy-MM"))
+                .Distinct()
+                .Count();
+
+            bool freeMonthUnlocked = bookedMonths >= 11;
+
+            ViewBag.FreeMonthUnlocked = freeMonthUnlocked;
+            ViewBag.MonthsBooked = bookedMonths;
 
             return View(bookings);
         }
