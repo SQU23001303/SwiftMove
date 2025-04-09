@@ -6,42 +6,44 @@
 
 <div class="container-fluid mt-4 text-dark text-center text-white">
     <h2>Customer Portal</h2>
-    @if (ViewBag.LoyaltyLevel != null)
-    {
-        <div class="alert alert-info text-start">
-            <strong>Loyalty Level:</strong> @ViewBag.LoyaltyLevel<br />
-            <strong>Total Spent:</strong> £@ViewBag.TotalSpent.ToString("F2")
+    
+@if (ViewBag.LoyaltyLevel != null)
+{
+    <div class="alert alert-info text-start">
 
-            @if (ViewBag.LoyaltyLevel == "Bronze")
-            {
-                <p class="mb-0 text-muted">Book more to unlock Silver perks at £500!</p>
-            }
-            else if (ViewBag.LoyaltyLevel == "Silver")
-            {
-                <p class="mb-0 text-muted">You're getting close to Gold! Hit £1000 to unlock all rewards.</p>
-            }
-            else if (ViewBag.LoyaltyLevel == "Gold")
-            {
-                <p class="mb-0 fw-bold text-warning">You're Gold! Contact us to redeem your exclusive benefits.</p>
-            }
+        <h5 class="mb-2"><strong>Loyalty Level:</strong> @ViewBag.LoyaltyLevel</h5>
+        <p class="mb-2"><strong>Total Spent:</strong> £@ViewBag.TotalSpent.ToString("F2")</p>
 
-            @if (ViewBag.FreeMonthUnlocked != null && (bool)ViewBag.FreeMonthUnlocked)
-            {
-                <div class="alert alert-success text-start">
-                    <strong>You've unlocked your FREE month of SwiftMove!</strong><br />
-                    Our team will contact you to apply your reward on your next booking.
-                </div>
-            }
-            else if (ViewBag.MonthsBooked != null)
-            {
-                int months = (int)ViewBag.MonthsBooked;
-                <div class="alert alert-warning text-start">
-                    You've booked in <strong>@months</strong> unique month(s).<br />
-                    Book in @((11 - months)) more month(s) to unlock a free one!
-                </div>
-            }
-        </div>
-    }
+        @if (ViewBag.LoyaltyLevel == "Bronze")
+        {
+            <p class="mb-2 text-muted">Book more to unlock <strong>Silver</strong> perks at £500.</p>
+        }
+        else if (ViewBag.LoyaltyLevel == "Silver")
+        {
+            <p class="mb-2 text-muted">You're getting close to <strong>Gold</strong>! Reach £1000 to unlock all rewards.</p>
+        }
+        else if (ViewBag.LoyaltyLevel == "Gold")
+        {
+            <p class="mb-2 text-warning fw-bold">You're Gold! Contact us to redeem your exclusive benefits.</p>
+        }
+
+        @if (ViewBag.FreeMonthUnlocked != null && (bool)ViewBag.FreeMonthUnlocked)
+        {
+            <p class="mt-3 mb-0 text-success fw-semibold">
+                You've unlocked your <strong>FREE month</strong> of SwiftMove!<br />
+                Our team will contact you to apply your reward on your next booking.
+            </p>
+        }
+        else if (ViewBag.MonthsBooked != null)
+        {
+            int months = (int)ViewBag.MonthsBooked;
+            <p class="mt-3 mb-0 text-dark">
+                You've booked in <strong>@months</strong> unique month(s).<br />
+                Book in <strong>@(11 - months)</strong> more month(s) to unlock a free one.
+            </p>
+        }
+    </div>
+}
 
     <h2>My Bookings</h2>
     <div class="table-responsive">
