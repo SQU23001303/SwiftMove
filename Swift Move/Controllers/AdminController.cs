@@ -146,7 +146,34 @@ namespace Swift_Move.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult SalesReport(string filter)
+        {
+            var bookings = _context.Services
+                .Include(s => s.ServiceList)
+                .Where(s => s.QuotePrice.HasValue)
+                .AsQueryable();
 
+            DateTime today = DateTime.UtcNow;
+
+            if (filter == "week")
+            {
+                var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+                bookings = bookings.Where(s => s.CollectionDate >= startOfWeek);
+            }
+            else if (filter == "month")
+            {
+                var startOfMonth = new DateTime(today.Year, today.Month, 1);
+                bookings = bookings.Where(s => s.CollectionDate >= startOfMonth);
+            }
+
+            var finalList = bookings.ToList();
+            ViewBag.Filter = filter;
+            ViewBag.Total = finalList.Sum(s => s.QuotePrice ?? 0);
+            ViewBag.Count = finalList.Count;
+
+            return View("~/Views/Admin/SalesReport.cshtml", finalList);
+        }
     }
 
 

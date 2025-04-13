@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Swift_Move.Models.ServiceModel>
+@{
+    ViewData["Title"] = "Sales Report";
+    string currentFilter = ViewBag.CurrentFilter as string ?? "all";
+    decimal total = ViewBag.TotalSales ?? 0;
+    int count = ViewBag.BookingCount ?? 0;
+}
+
+<div class="container mt-5 text-dark">
+    <h2>Sales Report</h2>
+    
+    <form method="get" class="mb-4">
+        <label class="form-label">Filter by:</label>
+        <select name="filter" class="form-select w-auto d-inline-block me-2" onchange="this.form.submit()">
+            <option value="all" selected="@(currentFilter == "all" ? "selected" : null)">All Time</option>
+            <option value="month" selected="@(currentFilter == "month" ? "selected" : null)">This Month</option>
+            <option value="week" selected="@(currentFilter == "week" ? "selected" : null)">This Week</option>
+        </select>
+    </form>
+
+
+    <div class="alert alert-info">
+        <strong>Total Bookings:</strong> @count<br />
+        <strong>Total Earnings:</strong> £@total.ToString("F2")
+    </div>
+
+    <table class="table table-bordered table-striped table-hover bg-white">
+        <thead class="table-dark">
+            <tr>
+                <th>Booking Name</th>
+                <th>Service Type</th>
+                <th>Quote</th>
+                <th>Collection Date</th>
+                <th>Customer Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.ServiceList?.Title</td>
+                        <td>
+                            @if (item.QuotePrice.HasValue)
+                            {
+                                <span>£@item.QuotePrice.Value.ToString("F2")</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted fst-italic">Not Quoted</span>
+                            }
+                        </td>
+                        <td>@item.CollectionDate.ToString("dd/MM/yyyy")</td>
+                        <td>@item.Email</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted">No bookings found for this filter.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+
+
