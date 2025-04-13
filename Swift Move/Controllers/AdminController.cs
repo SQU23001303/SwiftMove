@@ -18,12 +18,17 @@ namespace Swift_Move.Controllers
 
         public IActionResult Index()
         {
-            var services = _context.Services
-                .Include(s => s.ServiceStaff)
-                .ThenInclude(ss => ss.Staff)
-                .ToList();
+            var dashboardViewModel = new AdminDashboardViewModel
+            {
+                ServiceModel = _context.Services
+            .Include(s => s.ServiceStaff)
+            .ThenInclude(ss => ss.Staff)
+            .ToList(),
 
-            return View(services);
+                ServiceList = _context.ServiceList.ToList()
+            };
+
+            return View(dashboardViewModel);
         }
 
         public IActionResult Assign(int id)
@@ -70,6 +75,26 @@ namespace Swift_Move.Controllers
 
             _context.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult CreateService()
+        {
+            return View("~/Views/Admin/CreateService.cshtml");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateService(ServiceList model)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.ServiceList.Add(model);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View("~/Views/Admin/CreateService.cshtml", model);
         }
     }
 }

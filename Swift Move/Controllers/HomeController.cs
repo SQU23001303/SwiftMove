@@ -31,7 +31,8 @@ namespace Swift_Move.Controllers
 
         public IActionResult Services()
         {
-            return View();
+            var dynamicServices = _context.ServiceList.ToList();
+            return View(dynamicServices);
         }
 
         public IActionResult Bookings()
@@ -92,7 +93,6 @@ namespace Swift_Move.Controllers
                 .ThenInclude(ss => ss.Staff)
                 .ToList();
 
-            // ✅ Loyalty based on total spend
             decimal totalSpent = bookings
                 .Where(b => b.QuotePrice.HasValue)
                 .Sum(b => b.QuotePrice.Value);

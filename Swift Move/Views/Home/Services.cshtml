@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Swift_Move.Models.ServiceList>
+
+@{
     ViewData["Title"] = "Services";
 }
 
@@ -45,12 +47,27 @@
             </div>
         </div>
     </div>
-</div>
 
+    <hr class="bg-light mt-5 mb-4" style="height: 2px; border: none;" />
+    <h2 class="text-white text-center mb-4">All the services we offer</h2>
 
-
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow" style="border: 2.5px solid black;">
+                    <div class="card-body" style="background-color: darkcyan; color: white;">
+                        <h5 class="card-title">@item.Title</h5>
+                        <p class="card-text">@item.Description</p>
+                        <ul class="list-unstyled">
+                            <li><strong>Staff Required:</strong> @item.StaffRequired</li>
+                            <li><strong>Price per Job:</strong> £@item.Price.ToString("F2")</li>
+                        </ul>
+                        <a class="nav-link text-dark btn btn-light px-3 py-2 d-block mx-auto" style="width: 150px;" asp-controller="Home" asp-action="Bookings">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-    
-
-
 </div>
+
