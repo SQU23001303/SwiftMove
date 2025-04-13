@@ -6,7 +6,7 @@
     int count = ViewBag.BookingCount ?? 0;
 }
 
-<div class="container mt-5 text-dark">
+<div class="container mt-5 text-white">
     <h2>Sales Report</h2>
     
     <form method="get" class="mb-4">
@@ -19,9 +19,9 @@
     </form>
 
 
-    <div class="alert alert-info">
-        <strong>Total Bookings:</strong> @count<br />
-        <strong>Total Earnings:</strong> £@total.ToString("F2")
+    <div class="alert alert-info text-start w-50 mb-4">
+        <p><strong>Total Bookings:</strong> @ViewBag.TotalCount</p>
+        <p><strong>Total Earnings:</strong> £@ViewBag.TotalSales.ToString("F2")</p>
     </div>
 
     <table class="table table-bordered table-striped table-hover bg-white">
@@ -45,12 +45,13 @@
                         <td>
                             @if (item.QuotePrice.HasValue)
                             {
-                                <span>£@item.QuotePrice.Value.ToString("F2")</span>
+                                <span class="fw-bold text-success">£@item.QuotePrice.Value.ToString("F2")</span>
                             }
                             else
                             {
-                                <span class="text-muted fst-italic">Not Quoted</span>
+                                <em class="text-muted">Pending Quote</em>
                             }
+
                         </td>
                         <td>@item.CollectionDate.ToString("dd/MM/yyyy")</td>
                         <td>@item.Email</td>

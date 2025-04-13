@@ -147,33 +147,36 @@ namespace Swift_Move.Controllers
         }
 
         [HttpGet]
-        public IActionResult SalesReport(string filter)
+        public IActionResult SalesReport(string filter = "all")
         {
-            var bookings = _context.Services
+            var bookingsQuery = _context.Services
                 .Include(s => s.ServiceList)
-                .Where(s => s.QuotePrice.HasValue)
-                .AsQueryable();
+                .Where(s => s.QuotePrice.HasValue);
 
-            DateTime today = DateTime.UtcNow;
+            DateTime startDate = DateTime.MinValue;
 
-            if (filter == "week")
+            switch (filter.ToLower())
             {
-                var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
-                bookings = bookings.Where(s => s.CollectionDate >= startOfWeek);
-            }
-            else if (filter == "month")
-            {
-                var startOfMonth = new DateTime(today.Year, today.Month, 1);
-                bookings = bookings.Where(s => s.CollectionDate >= startOfMonth);
+                case "week":
+                    startDate = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                    bookingsQuery = bookingsQuery.Where(b => b.CollectionDate >= startDate);
+                    break;
+                case "month":
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    bookingsQuery = bookingsQuery.Where(b => b.CollectionDate >= startDate);
+                    break;
             }
 
-            var finalList = bookings.ToList();
-            ViewBag.Filter = filter;
-            ViewBag.Total = finalList.Sum(s => s.QuotePrice ?? 0);
-            ViewBag.Count = finalList.Count;
+            // Bring data into memory
+            var bookings = bookingsQuery.ToList();
 
-            return View("~/Views/Admin/SalesReport.cshtml", finalList);
+            ViewBag.TotalSales = bookings.Sum(b => b.QuotePrice ?? 0);
+            ViewBag.TotalCount = bookings.Count;
+            ViewBag.CurrentFilter = filter;
+
+            return View(bookings);
         }
+
     }
 
 
