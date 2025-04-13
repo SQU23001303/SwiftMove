@@ -120,6 +120,32 @@ namespace Swift_Move.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult DeleteService(int id)
+        {
+            var service = _context.ServiceList.Find(id);
+            if (service == null)
+                return NotFound();
+
+            return View(service); // Will look for Views/Admin/DeleteService.cshtml
+        }
+
+        [HttpPost, ActionName("DeleteService")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteServiceConfirmed(int id)
+        {
+            var service = _context.ServiceList.Find(id);
+            if (service == null)
+                return NotFound();
+
+            _context.ServiceList.Remove(service);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+
     }
 
 
