@@ -6,19 +6,19 @@
     var staffList = ViewBag.StaffList as List<Staff>;
 }
 
-<h2>Assign Staff to Booking</h2>
+<h2 class="text-white">Assign Staff to Booking</h2>
 
 <form asp-action="Assign" method="post" onsubmit="return validateCheckboxLimit();">
     <input type="hidden" asp-for="Id" />
     <input type="hidden" id="ActionType" name="ActionType" value="" />
 
-    <div class="mb-3">
+    <div class="mb-3 text-white">
         <label asp-for="QuotePrice" class="form-label"></label>
         <input asp-for="QuotePrice" class="form-control" />
         <span asp-validation-for="QuotePrice" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group text-white">
         <label>Select Staff (Max 3):</label>
         <div id="staffCheckboxes" class="border rounded p-2">
             @foreach (var staff in staffList)
@@ -38,7 +38,7 @@
                 </div>
             }
         </div>
-        <small class="text-muted">You can select up to 3 staff members.</small>
+        <small class="text-white">You can select up to 3 staff members.</small>
     </div>
 
     <div class="mt-4 d-flex gap-2">
@@ -50,7 +50,7 @@
 
 @if (Model.ServiceStaff != null && Model.ServiceStaff.Any())
 {
-    <div class="mt-4">
+    <div class="mt-4 text-white">
         <strong>Currently Assigned:</strong>
         <ul>
             @foreach (var assignment in Model.ServiceStaff)
