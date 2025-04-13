@@ -96,5 +96,31 @@ namespace Swift_Move.Controllers
 
             return View("~/Views/Admin/CreateService.cshtml", model);
         }
+
+        [HttpGet]
+        public IActionResult EditService(int id)
+        {
+            var service = _context.ServiceList.Find(id);
+            if (service == null)
+                return NotFound();
+
+            return View(service); // will look for Views/Admin/EditService.cshtml
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditService(ServiceList model)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.ServiceList.Update(model);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
     }
+
+
 }

@@ -35,8 +35,8 @@
                     <td>@servicelist.StaffRequired</td>
                     <td>£@servicelist.Price.ToString("F2")</td>
                     <td>
-                        <a asp-controller="Service" asp-action="Edit" asp-route-id="@servicelist.Id" class="btn btn-sm btn-warning me-2">Edit</a>
-                        <a asp-controller="Service" asp-action="Delete" asp-route-id="@servicelist.Id" class="btn btn-sm btn-danger">Delete</a>
+                        <a asp-controller="Admin" asp-action="EditService" asp-route-id="@servicelist.Id" class="btn btn-sm btn-warning me-2">Edit</a>
+                        <a asp-controller="Admin" asp-action="DeleteService" asp-route-id="@servicelist.Id" class="btn btn-sm btn-danger">Delete</a>
                     </td>
                 </tr>
             }
