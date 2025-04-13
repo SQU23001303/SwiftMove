@@ -51,6 +51,7 @@ namespace Swift_Move.Data
         public DbSet<Staff> Staff { get; set; }
         public DbSet<ServiceStaff> ServiceStaff { get; set; }
 
+        public DbSet<ServiceList> ServiceList { get; set; }
 
 
     }
