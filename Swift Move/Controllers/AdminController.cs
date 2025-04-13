@@ -21,9 +21,9 @@ namespace Swift_Move.Controllers
             var dashboardViewModel = new AdminDashboardViewModel
             {
                 ServiceModel = _context.Services
-            .Include(s => s.ServiceStaff)
-            .ThenInclude(ss => ss.Staff)
-            .ToList(),
+                .Include(s => s.ServiceStaff)
+                .ThenInclude(ss => ss.Staff)
+                .ToList(),
 
                 ServiceList = _context.ServiceList.ToList()
             };

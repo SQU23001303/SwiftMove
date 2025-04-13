@@ -35,9 +35,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="ServiceType" class="form-label">Service Type</label>
-                    <select asp-for="ServiceType" asp-items="Html.GetEnumSelectList<ServiceType>()" class="form-select"></select>
-                    <span asp-validation-for="ServiceType" class="text-danger"></span>
+                    <label asp-for="ServiceListId" class="form-label">Service Type</label>
+                    <select asp-for="ServiceListId" class="form-select" asp-items="ViewBag.ServiceOptions"></select>
+                    <span asp-validation-for="ServiceListId" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">

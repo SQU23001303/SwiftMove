@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Swift_Move.Data;
 using Swift_Move.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Swift_Move.Controllers
 {
@@ -37,6 +38,12 @@ namespace Swift_Move.Controllers
 
         public IActionResult Bookings()
         {
+            ViewBag.ServiceOptions = _context.ServiceList
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Title            
+                }).ToList();
             return View();
         }
 
@@ -77,6 +84,13 @@ namespace Swift_Move.Controllers
                     ModelState.AddModelError("", "An error occurred while saving the service. Please try again.");
                 }
             }
+
+            ViewBag.ServiceOptions = _context.ServiceList
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Title
+                }).ToList();
 
             return View("Bookings", service);
         }
@@ -133,6 +147,13 @@ namespace Swift_Move.Controllers
                 return NotFound();
             }
 
+            ViewBag.ServiceOptions = _context.ServiceList
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Title
+                }).ToList();
+
             return View(service);
         }
 
@@ -147,6 +168,13 @@ namespace Swift_Move.Controllers
                 .Include(s => s.ServiceStaff)
                 .FirstOrDefault(s => s.Id == updatedService.Id && s.UserId == userId);
 
+            ViewBag.ServiceOptions = _context.ServiceList
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Title
+                }).ToList();
+
             if (existing == null)
                 return NotFound();
 
@@ -156,7 +184,7 @@ namespace Swift_Move.Controllers
                 existing.Title = updatedService.Title;
                 existing.CollectionAddress = updatedService.CollectionAddress;
                 existing.DeliveryAddress = updatedService.DeliveryAddress;
-                existing.ServiceType = updatedService.ServiceType;
+                existing.ServiceList = updatedService.ServiceList;
                 existing.CollectionDate = updatedService.CollectionDate.ToUniversalTime();
                 existing.DeliveryDate = updatedService.DeliveryDate.ToUniversalTime();
                 existing.Description = updatedService.Description;

@@ -275,7 +275,7 @@ namespace Swift_Move.Migrations
                     b.Property<decimal?>("QuotePrice")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ServiceType")
+                    b.Property<int>("ServiceListId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
@@ -287,6 +287,8 @@ namespace Swift_Move.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ServiceListId");
 
                     b.ToTable("Services");
                 });
@@ -437,6 +439,17 @@ namespace Swift_Move.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Swift_Move.Models.ServiceModel", b =>
+                {
+                    b.HasOne("Swift_Move.Models.ServiceList", "ServiceList")
+                        .WithMany()
+                        .HasForeignKey("ServiceListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServiceList");
                 });
 
             modelBuilder.Entity("Swift_Move.Models.ServiceStaff", b =>

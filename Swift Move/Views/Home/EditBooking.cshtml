@@ -29,9 +29,10 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="ServiceType" class="form-label"></label>
-            <select asp-for="ServiceType" asp-items="Html.GetEnumSelectList<ServiceType>()" class="form-select"></select>
-            <span asp-validation-for="ServiceType" class="text-danger"></span>
+            <select asp-for="ServiceListId" class="form-select" asp-items="ViewBag.ServiceOptions">
+                <option value="">-- Select a service --</option>
+            </select>
+            <span asp-validation-for="ServiceListId" class="text-danger"></span>
         </div>
 
         <div class="mb-3">

@@ -22,8 +22,12 @@ namespace Swift_Move.Models
         [Required(ErrorMessage = "Property Address is required")]
         public string DeliveryAddress { get; set; }
 
+        //Service List model so admins can edit easily 
         [Required(ErrorMessage = "Service type is required")]
-        public ServiceType ServiceType { get; set; }
+        [Display(Name = "Service Type")]
+        public int ServiceListId { get; set; }
+        [ForeignKey("ServiceListId")]
+        public ServiceList ServiceList { get; set; }
 
         [Required(ErrorMessage = "Collection Date is required")]
         public DateTime CollectionDate { get; set; }

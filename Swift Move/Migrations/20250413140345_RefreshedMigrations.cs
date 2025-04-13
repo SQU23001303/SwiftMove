@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Swift_Move.Migrations
 {
     /// <inheritdoc />
-    public partial class quote : Migration
+    public partial class RefreshedMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,26 +53,19 @@ namespace Swift_Move.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Services",
+                name: "ServiceList",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    CollectionAddress = table.Column<string>(type: "TEXT", nullable: false),
-                    DeliveryAddress = table.Column<string>(type: "TEXT", nullable: false),
-                    ServiceType = table.Column<int>(type: "INTEGER", nullable: false),
-                    CollectionDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DeliveryDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    Phone = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
-                    QuotePrice = table.Column<decimal>(type: "TEXT", nullable: true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    StaffRequired = table.Column<int>(type: "INTEGER", nullable: false),
+                    Price = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.PrimaryKey("PK_ServiceList", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,6 +189,35 @@ namespace Swift_Move.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Services",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    CollectionAddress = table.Column<string>(type: "TEXT", nullable: false),
+                    DeliveryAddress = table.Column<string>(type: "TEXT", nullable: false),
+                    ServiceListId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CollectionDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DeliveryDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Phone = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    QuotePrice = table.Column<decimal>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Services_ServiceList_ServiceListId",
+                        column: x => x.ServiceListId,
+                        principalTable: "ServiceList",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ServiceStaff",
                 columns: table => new
                 {
@@ -274,6 +296,11 @@ namespace Swift_Move.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Services_ServiceListId",
+                table: "Services",
+                column: "ServiceListId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ServiceStaff_StaffId",
                 table: "ServiceStaff",
                 column: "StaffId");
@@ -311,6 +338,9 @@ namespace Swift_Move.Migrations
 
             migrationBuilder.DropTable(
                 name: "Staff");
+
+            migrationBuilder.DropTable(
+                name: "ServiceList");
         }
     }
 }
