@@ -27,6 +27,7 @@ namespace Swift_Move.Models
         [Display(Name = "Service Type")]
         public int ServiceListId { get; set; }
         [ForeignKey("ServiceListId")]
+        [ValidateNever]
         public ServiceList ServiceList { get; set; }
 
         [Required(ErrorMessage = "Collection Date is required")]

@@ -184,7 +184,7 @@ namespace Swift_Move.Controllers
                 existing.Title = updatedService.Title;
                 existing.CollectionAddress = updatedService.CollectionAddress;
                 existing.DeliveryAddress = updatedService.DeliveryAddress;
-                existing.ServiceList = updatedService.ServiceList;
+                existing.ServiceListId = updatedService.ServiceListId;
                 existing.CollectionDate = updatedService.CollectionDate.ToUniversalTime();
                 existing.DeliveryDate = updatedService.DeliveryDate.ToUniversalTime();
                 existing.Description = updatedService.Description;
