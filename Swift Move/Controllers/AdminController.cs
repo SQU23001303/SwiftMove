@@ -151,26 +151,24 @@ namespace Swift_Move.Controllers
         {
             var bookingsQuery = _context.Services
                 .Include(s => s.ServiceList)
-                .Where(s => s.QuotePrice.HasValue);
+                .Include(s => s.ServiceStaff)
+                .AsQueryable();
 
-            DateTime startDate = DateTime.MinValue;
-
-            switch (filter.ToLower())
+            DateTime now = DateTime.UtcNow;
+            switch (filter)
             {
                 case "week":
-                    startDate = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                    bookingsQuery = bookingsQuery.Where(b => b.CollectionDate >= startDate);
+                    var startOfWeek = now.Date.AddDays(-(int)now.DayOfWeek);
+                    bookingsQuery = bookingsQuery.Where(b => b.CollectionDate >= startOfWeek);
                     break;
                 case "month":
-                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                    bookingsQuery = bookingsQuery.Where(b => b.CollectionDate >= startDate);
+                    bookingsQuery = bookingsQuery.Where(b => b.CollectionDate.Month == now.Month && b.CollectionDate.Year == now.Year);
                     break;
             }
 
-            // Bring data into memory
             var bookings = bookingsQuery.ToList();
 
-            ViewBag.TotalSales = bookings.Sum(b => b.QuotePrice ?? 0);
+            ViewBag.TotalSales = bookings.Sum(b => b.QuotePrice ?? 0m);
             ViewBag.TotalCount = bookings.Count;
             ViewBag.CurrentFilter = filter;
 
