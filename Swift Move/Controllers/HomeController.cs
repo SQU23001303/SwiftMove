@@ -57,6 +57,17 @@ namespace Swift_Move.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Contact(string Name, string Email, string Message)
+        {
+            // (Optional: Do something with the message like logging, emailing, etc.)
+
+            TempData["SuccessMessage"] = "Thank you, your message has been submitted!";
+            return RedirectToAction("Contact");
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
