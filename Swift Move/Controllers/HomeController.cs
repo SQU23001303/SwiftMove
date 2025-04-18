@@ -329,15 +329,16 @@ namespace Swift_Move.Controllers
             var review = _context.Reviews.FirstOrDefault(r => r.Id == id && r.UserId == userId);
             if (review == null) return NotFound();
 
-            return View(review);
+            return View(review); // This should go to DeleteReview.cshtml
         }
+
 
         [HttpPost, ActionName("DeleteReview")]
         [ValidateAntiForgeryToken]
         [Authorize]
         public IActionResult DeleteReviewConfirmed(int id)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             var review = _context.Reviews.FirstOrDefault(r => r.Id == id && r.UserId == userId);
             if (review == null) return NotFound();
 
@@ -346,6 +347,7 @@ namespace Swift_Move.Controllers
 
             return RedirectToAction("Portal");
         }
+
 
 
     }
