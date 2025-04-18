@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Swift_Move.Models.ServiceModel>
+﻿@model Swift_Move.Models.PortalViewModel
 
 @{
     ViewData["Title"] = "Portal";
@@ -6,44 +6,43 @@
 
 <div class="container-fluid mt-4 text-dark text-center text-white">
     <h2>Customer Portal</h2>
-    
-@if (ViewBag.LoyaltyLevel != null)
-{
-    <div class="alert alert-info text-start">
 
-        <h5 class="mb-2"><strong>Loyalty Level:</strong> @ViewBag.LoyaltyLevel</h5>
-        <p class="mb-2"><strong>Total Spent:</strong> £@ViewBag.TotalSpent.ToString("F2")</p>
+    @if (ViewBag.LoyaltyLevel != null)
+    {
+        <div class="alert alert-info text-start">
+            <h5 class="mb-2"><strong>Loyalty Level:</strong> @ViewBag.LoyaltyLevel</h5>
+            <p class="mb-2"><strong>Total Spent:</strong> £@ViewBag.TotalSpent.ToString("F2")</p>
 
-        @if (ViewBag.LoyaltyLevel == "Bronze")
-        {
-            <p class="mb-2 text-muted">Book more to unlock <strong>Silver</strong> perks at £500.</p>
-        }
-        else if (ViewBag.LoyaltyLevel == "Silver")
-        {
-            <p class="mb-2 text-muted">You're getting close to <strong>Gold</strong>! Reach £1000 to unlock all rewards.</p>
-        }
-        else if (ViewBag.LoyaltyLevel == "Gold")
-        {
-            <p class="mb-2 text-warning fw-bold">You're Gold! Contact us to redeem your exclusive benefits.</p>
-        }
+            @if (ViewBag.LoyaltyLevel == "Bronze")
+            {
+                <p class="mb-2 text-muted">Book more to unlock <strong>Silver</strong> perks at £500.</p>
+            }
+            else if (ViewBag.LoyaltyLevel == "Silver")
+            {
+                <p class="mb-2 text-muted">You're getting close to <strong>Gold</strong>! Reach £1000 to unlock all rewards.</p>
+            }
+            else if (ViewBag.LoyaltyLevel == "Gold")
+            {
+                <p class="mb-2 text-warning fw-bold">You're Gold! Contact us to redeem your exclusive benefits.</p>
+            }
 
-        @if (ViewBag.FreeMonthUnlocked != null && (bool)ViewBag.FreeMonthUnlocked)
-        {
-            <p class="mt-3 mb-0 text-success fw-semibold">
-                You've unlocked your <strong>FREE month</strong> of SwiftMove!<br />
-                Our team will contact you to apply your reward on your next booking.
-            </p>
-        }
-        else if (ViewBag.MonthsBooked != null)
-        {
-            int months = (int)ViewBag.MonthsBooked;
-            <p class="mt-3 mb-0 text-dark">
-                You've booked in <strong>@months</strong> unique month(s).<br />
-                Book in <strong>@(11 - months)</strong> more month(s) to unlock a free one.
-            </p>
-        }
-    </div>
-}
+            @if (ViewBag.FreeMonthUnlocked != null && (bool)ViewBag.FreeMonthUnlocked)
+            {
+                <p class="mt-3 mb-0 text-success fw-semibold">
+                    You've unlocked your <strong>FREE month</strong> of SwiftMove!<br />
+                    Our team will contact you to apply your reward on your next booking.
+                </p>
+            }
+            else if (ViewBag.MonthsBooked != null)
+            {
+                int months = (int)ViewBag.MonthsBooked;
+                <p class="mt-3 mb-0 text-dark">
+                    You've booked in <strong>@months</strong> unique month(s).<br />
+                    Book in <strong>@(11 - months)</strong> more month(s) to unlock a free one.
+                </p>
+            }
+        </div>
+    }
 
     <h2>My Bookings</h2>
     <div class="table-responsive">
@@ -62,9 +61,9 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model != null && Model.Any())
+                @if (Model.Bookings != null && Model.Bookings.Any())
                 {
-                    foreach (var order in Model)
+                    foreach (var order in Model.Bookings)
                     {
                         <tr>
                             <td>@order.Title</td>
@@ -81,7 +80,7 @@
                                 {
                                     <span class="text-muted fst-italic">Quote will be available soon</span>
                                 }
-                                </td>
+                            </td>
                             <td>
                                 @(order.ServiceStaff != null && order.ServiceStaff.Any() ? "Assigned" : "Pending")
                             </td>
@@ -110,12 +109,53 @@
                 else
                 {
                     <tr>
-                        <td colspan="7" class="text-center text-muted"><em>You have no orders yet.</em></td>
+                        <td colspan="9" class="text-center text-muted"><em>You have no orders yet.</em></td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <h2 class="mt-5">My Reviews</h2>
+
+    <div class="text-end mb-3">
+        <a asp-action="CreateReview" class="btn btn-success">Add Review</a>
+    </div>
+
+    <div class="table-responsive">
+        @if (Model.Reviews != null && Model.Reviews.Any())
+        {
+            <table class="table bg-white text-dark table-bordered mt-2">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Reviews)
+                    {
+                        <tr>
+                            <td>@r.Rating / 5</td>
+                            <td>@r.Comment</td>
+                            <td>@r.CreatedAt.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <a asp-action="EditReview" asp-route-id="@r.Id" class="btn btn-sm btn-warning me-2">Edit</a>
+                                <a asp-action="DeleteReview" asp-route-id="@r.Id" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-muted">You haven’t submitted any reviews yet.</p>
+        }
+    </div>
+
 </div>
 
 

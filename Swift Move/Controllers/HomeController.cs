@@ -22,7 +22,12 @@ namespace Swift_Move.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var latestReviews = _context.Reviews
+                .OrderByDescending(r => r.CreatedAt)
+                .Take(3)
+                .ToList();
+
+            return View(latestReviews);
         }
 
         public IActionResult Privacy()
@@ -107,6 +112,12 @@ namespace Swift_Move.Controllers
                 .ThenInclude(ss => ss.Staff)
                 .ToList();
 
+            var reviews = _context.Reviews
+                .Where(r => r.UserId == userId)
+                .OrderByDescending(r => r.CreatedAt)
+                .ToList();
+
+            // Loyalty calculations
             decimal totalSpent = bookings
                 .Where(b => b.QuotePrice.HasValue)
                 .Sum(b => b.QuotePrice.Value);
@@ -118,9 +129,6 @@ namespace Swift_Move.Controllers
                 _ => "Bronze"
             };
 
-            ViewBag.LoyaltyLevel = loyaltyLevel;
-            ViewBag.TotalSpent = totalSpent;
-
             var bookedMonths = bookings
                 .Select(b => b.CollectionDate.ToString("yyyy-MM"))
                 .Distinct()
@@ -128,11 +136,20 @@ namespace Swift_Move.Controllers
 
             bool freeMonthUnlocked = bookedMonths >= 11;
 
+            ViewBag.LoyaltyLevel = loyaltyLevel;
+            ViewBag.TotalSpent = totalSpent;
             ViewBag.FreeMonthUnlocked = freeMonthUnlocked;
             ViewBag.MonthsBooked = bookedMonths;
 
-            return View(bookings);
+            var model = new PortalViewModel
+            {
+                Bookings = bookings,
+                Reviews = reviews
+            };
+
+            return View(model);
         }
+
 
         [Authorize]
         public IActionResult EditBooking(int id)
@@ -191,7 +208,7 @@ namespace Swift_Move.Controllers
                 existing.Phone = updatedService.Phone;
                 existing.Email = updatedService.Email;
 
-                // ✅ Reset Quote and Assigned Staff
+                // Reset Quote and Assigned Staff
                 existing.QuotePrice = null;
 
                 var existingAssignments = _context.ServiceStaff
@@ -244,7 +261,91 @@ namespace Swift_Move.Controllers
         }
 
 
+        [Authorize]
+        public IActionResult CreateReview()
+        {
+            return View();
+        }
 
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult CreateReview(Review review)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userName = User.Identity.Name;
+
+            if (ModelState.IsValid)
+            {
+                review.UserId = userId;
+                review.UserName = userName;
+                review.CreatedAt = DateTime.UtcNow;
+
+                _context.Reviews.Add(review);
+                _context.SaveChanges();
+
+                return RedirectToAction("Portal");
+            }
+
+            return View(review);
+        }
+
+        [Authorize]
+        public IActionResult EditReview(int id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var review = _context.Reviews.FirstOrDefault(r => r.Id == id && r.UserId == userId);
+            if (review == null) return NotFound();
+
+            return View(review);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult EditReview(Review updated)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var review = _context.Reviews.FirstOrDefault(r => r.Id == updated.Id && r.UserId == userId);
+            if (review == null) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                review.Rating = updated.Rating;
+                review.Comment = updated.Comment;
+                _context.SaveChanges();
+                return RedirectToAction("Portal");
+            }
+
+            return View(updated);
+        }
+
+        [Authorize]
+        public IActionResult DeleteReview(int id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var review = _context.Reviews.FirstOrDefault(r => r.Id == id && r.UserId == userId);
+            if (review == null) return NotFound();
+
+            return View(review);
+        }
+
+        [HttpPost, ActionName("DeleteReview")]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult DeleteReviewConfirmed(int id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var review = _context.Reviews.FirstOrDefault(r => r.Id == id && r.UserId == userId);
+            if (review == null) return NotFound();
+
+            _context.Reviews.Remove(review);
+            _context.SaveChanges();
+
+            return RedirectToAction("Portal");
+        }
 
 
     }

@@ -1,4 +1,7 @@
-﻿@{
+﻿@model List<Swift_Move.Models.Review>
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -68,5 +71,27 @@
         Swift Move began with a simple mission: to make moving a smoother and more reliable experience for everyone. What started as a small team with a big vision has grown into a trusted name in the removals and storage industry. Over the years, we’ve helped countless families and businesses transition into new spaces with confidence and ease. Our commitment to professionalism, care, and customer satisfaction drives everything we do — and as we continue to grow, we remain grounded in the values that built our foundation.
     </p>
 
+    <br />
+    <hr class="bg-light" style="height: 2px; border: none; width: 100%;">
+
+    <div class="mt-5 text-white">
+    <h3 class="text-center">Customer Reviews</h3>
+    <div class="row justify-content-center">
+        
+            @foreach (var review in Model)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card bg-light shadow">
+                        <div class="card-body">
+                            <h5 class="card-title">@review.UserName</h5>
+                            <p class="card-text">@review.Comment</p>
+                            <span>Rating: @review.Rating/5</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
 
 </div>
