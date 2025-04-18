@@ -74,6 +74,7 @@ namespace Swift_Move.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        //Create Booking
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(ServiceModel service)
@@ -93,7 +94,9 @@ namespace Swift_Move.Controllers
                     _context.Services.Add(service);
                     _context.SaveChanges();
 
-                    return RedirectToAction("Index");
+                    TempData["SuccessMessage"] = "Booking submitted successfully!";
+
+                    return RedirectToAction("Bookings");
                 }
                 catch (Exception ex)
                 {
