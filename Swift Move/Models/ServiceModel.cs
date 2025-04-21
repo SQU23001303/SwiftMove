@@ -10,6 +10,7 @@ namespace Swift_Move.Models
 {
     public class ServiceModel
     {
+        //Is the booking form on the website for users to book services
         [Key]
         public int Id { get; set; }
         [Required(ErrorMessage = "Service Title is requires")]
@@ -22,7 +23,6 @@ namespace Swift_Move.Models
         [Required(ErrorMessage = "Property Address is required")]
         public string DeliveryAddress { get; set; }
 
-        //Service List model so admins can edit easily 
         [Required(ErrorMessage = "Service type is required")]
         [Display(Name = "Service Type")]
         public int ServiceListId { get; set; }

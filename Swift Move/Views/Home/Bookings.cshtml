@@ -24,25 +24,25 @@
 
             <form asp-controller="Home" asp-action="Create" method="post">
                 <div class="mb-3">
-                    <label asp-for="Title" class="form-label">Company/Personal Name</label>
+                    <label asp-for="Title" class="form-label">Company/Personal Name *</label>
                     <input asp-for="Title" class="form-control" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="CollectionAddress" class="form-label">Collection Address</label>
+                    <label asp-for="CollectionAddress" class="form-label">Collection Address *</label>
                     <input asp-for="CollectionAddress" class="form-control" />
                     <span asp-validation-for="CollectionAddress" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="DeliveryAddress" class="form-label">Delivery Address</label>
+                    <label asp-for="DeliveryAddress" class="form-label">Delivery Address *</label>
                     <input asp-for="DeliveryAddress" class="form-control" />
                     <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="ServiceListId" class="form-label">Service Type</label>
+                    <label asp-for="ServiceListId" class="form-label">Service Type *</label>
                     <select asp-for="ServiceListId" asp-items="ViewBag.ServiceOptions" class="form-select">
                         <option value="">-- Select a Service --</option>
                     </select>
@@ -50,35 +50,34 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="CollectionDate" class="form-label">Collection Date</label>
+                    <label asp-for="CollectionDate" class="form-label">Collection Date *</label>
                     <input asp-for="CollectionDate" type="datetime-local" class="form-control" />
                     <span asp-validation-for="CollectionDate" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="DeliveryDate" class="form-label">Delivery Date</label>
+                    <label asp-for="DeliveryDate" class="form-label">Delivery Date *</label>
                     <input asp-for="DeliveryDate" type="datetime-local" class="form-control" />
                     <span asp-validation-for="DeliveryDate" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Description" class="form-label">Description</label>
+                    <label asp-for="Description" class="form-label">Description *</label>
                     <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Phone" class="form-label">Phone Number</label>
+                    <label asp-for="Phone" class="form-label">Phone Number *</label>
                     <input asp-for="Phone" type="tel" class="form-control" />
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Email" class="form-label">Email</label>
+                    <label asp-for="Email" class="form-label">Email *</label>
                     <input asp-for="Email" type="email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
-                <!-- Button not working-->
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Submit Booking</button>
                     <a asp-action="Index" class="btn btn-secondary">Cancel</a>

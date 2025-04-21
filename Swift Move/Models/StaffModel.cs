@@ -4,6 +4,7 @@ namespace Swift_Move.Models
 {
     public class Staff
     {
+        //For a staff member to be added
         [Key]
         public int Id { get; set; }
 

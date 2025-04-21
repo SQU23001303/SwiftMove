@@ -20,6 +20,7 @@ namespace Swift_Move.Controllers
             _context = context;
         }
 
+        //Returns index page view
         public IActionResult Index()
         {
             var latestReviews = _context.Reviews
@@ -35,12 +36,14 @@ namespace Swift_Move.Controllers
             return View();
         }
 
+        //Returns Services page view
         public IActionResult Services()
         {
             var dynamicServices = _context.ServiceList.ToList();
             return View(dynamicServices);
         }
 
+        //Returns Bookings page view
         public IActionResult Bookings()
         {
             ViewBag.ServiceOptions = _context.ServiceList
@@ -52,6 +55,7 @@ namespace Swift_Move.Controllers
             return View();
         }
 
+        //Returns Contact Page view
         public IActionResult Contact()
         {
             return View();
@@ -61,7 +65,7 @@ namespace Swift_Move.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Contact(string Name, string Email, string Message)
         {
-            // (Optional: Do something with the message like logging, emailing, etc.)
+            
 
             TempData["SuccessMessage"] = "Thank you, your message has been submitted!";
             return RedirectToAction("Contact");
@@ -83,7 +87,6 @@ namespace Swift_Move.Controllers
             {
                 var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
-                // 2. Assign the ID to the booking
                 service.UserId = userId;
 
                 try
@@ -131,7 +134,6 @@ namespace Swift_Move.Controllers
                 .OrderByDescending(r => r.CreatedAt)
                 .ToList();
 
-            // Loyalty calculations
             decimal totalSpent = bookings
                 .Where(b => b.QuotePrice.HasValue)
                 .Sum(b => b.QuotePrice.Value);
@@ -211,7 +213,7 @@ namespace Swift_Move.Controllers
 
             if (ModelState.IsValid)
             {
-                // Update editable fields
+                //Update editable fields
                 existing.Title = updatedService.Title;
                 existing.CollectionAddress = updatedService.CollectionAddress;
                 existing.DeliveryAddress = updatedService.DeliveryAddress;
@@ -222,7 +224,7 @@ namespace Swift_Move.Controllers
                 existing.Phone = updatedService.Phone;
                 existing.Email = updatedService.Email;
 
-                // Reset Quote and Assigned Staff
+                //Reset Quote and Assigned Staff
                 existing.QuotePrice = null;
 
                 var existingAssignments = _context.ServiceStaff
@@ -247,7 +249,7 @@ namespace Swift_Move.Controllers
             if (service == null)
                 return NotFound();
 
-            return View(service); // Renders DeleteBooking.cshtml
+            return View(service);
         }
 
 
@@ -264,7 +266,7 @@ namespace Swift_Move.Controllers
             if (service == null)
                 return NotFound();
 
-            // Remove assigned staff
+            //Remove assigned staff
             var assignments = _context.ServiceStaff.Where(ss => ss.ServiceModelId == id);
             _context.ServiceStaff.RemoveRange(assignments);
 
@@ -343,7 +345,7 @@ namespace Swift_Move.Controllers
             var review = _context.Reviews.FirstOrDefault(r => r.Id == id && r.UserId == userId);
             if (review == null) return NotFound();
 
-            return View(review); // This should go to DeleteReview.cshtml
+            return View(review);
         }
 
 

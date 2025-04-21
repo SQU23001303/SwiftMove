@@ -16,6 +16,7 @@ namespace Swift_Move.Controllers
             _context = context;
         }
 
+        //Returns an index view
         public IActionResult Index()
         {
             var dashboardViewModel = new AdminDashboardViewModel
@@ -32,6 +33,7 @@ namespace Swift_Move.Controllers
             return View(dashboardViewModel);
         }
 
+        
         public IActionResult Assign(int id)
         {
             var service = _context.Services
@@ -43,6 +45,7 @@ namespace Swift_Move.Controllers
             return View(service);
         }
 
+        //Assigns staff, quote or both to a job
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Assign(ServiceModel model, List<int> SelectedStaffIds, string ActionType)
@@ -78,6 +81,7 @@ namespace Swift_Move.Controllers
             return RedirectToAction("Index");
         }
 
+        //Create/Edit/Delete services on the admin dashboard
         [HttpGet]
         public IActionResult CreateService()
         {
@@ -105,7 +109,7 @@ namespace Swift_Move.Controllers
             if (service == null)
                 return NotFound();
 
-            return View(service); // will look for Views/Admin/EditService.cshtml
+            return View(service);
         }
 
         [HttpPost]
@@ -129,7 +133,7 @@ namespace Swift_Move.Controllers
             if (service == null)
                 return NotFound();
 
-            return View(service); // Will look for Views/Admin/DeleteService.cshtml
+            return View(service);
         }
 
         [HttpPost, ActionName("DeleteService")]
@@ -146,6 +150,7 @@ namespace Swift_Move.Controllers
             return RedirectToAction("Index");
         }
 
+        //How the Sales Report works
         [HttpGet]
         public IActionResult SalesReport(string filter = "all")
         {

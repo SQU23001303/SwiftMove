@@ -4,6 +4,7 @@ namespace Swift_Move.Models
 {
     public class ServiceStaff
     {
+        //To assign staff to a job
         public int ServiceModelId { get; set; }
         public ServiceModel ServiceModel { get; set; }
 

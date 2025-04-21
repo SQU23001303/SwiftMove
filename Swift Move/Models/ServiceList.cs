@@ -4,6 +4,7 @@ namespace Swift_Move.Models
 {
     public class ServiceList
     {
+        //Service List is on the admin dashboard to be able to edit what services the company has to offer
         [Key]
         public int Id { get; set; }
 
