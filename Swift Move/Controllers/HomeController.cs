@@ -31,11 +31,6 @@ namespace Swift_Move.Controllers
             return View(latestReviews);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         //Returns Services page view
         public IActionResult Services()
         {
